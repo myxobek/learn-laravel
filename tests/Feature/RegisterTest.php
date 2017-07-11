@@ -13,7 +13,7 @@ class RegisterTest extends TestCase
     {
         $payload = [
             'name'      => 'John',
-            'email'     => 'john@user.com',
+            'email'     => 'john@test.com',
             'password'  => 'foobar123',
             'password_confirmation' => 'foobar123',
         ];
@@ -47,7 +47,7 @@ class RegisterTest extends TestCase
     {
         $payload = [
             'name'      => 'John',
-            'email'     => 'john@user.com',
+            'email'     => 'john@test.com',
             'password'  => 'foobar123',
         ];
 
