@@ -7,14 +7,11 @@ use App\Voucher;
 
 class VoucherController extends Controller
 {
-    public function index()
-    {
-        return Voucher::all();
-    }
-
     public function create(Request $request)
     {
-        return Voucher::create($request->all());
+        $voucher = Voucher::create($request->all());
+
+        return response()->json($voucher);
     }
 
     public function bind(Request $request, Voucher $voucher)

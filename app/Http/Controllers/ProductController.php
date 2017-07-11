@@ -14,7 +14,9 @@ class ProductController extends Controller
 
     public function add(Request $request)
     {
-        return Product::create($request->all());
+        $product = Product::create($request->all());
+
+        return response()->json($product);
     }
 
     public function buy(Request $request, Product $product)

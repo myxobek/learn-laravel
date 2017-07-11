@@ -12,19 +12,20 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\User::class, function (Faker\Generator $faker)
+{
     static $password;
 
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'name'              => $faker->name,
+        'email'             => $faker->unique()->safeEmail,
+        'password'          => $password ?: $password = bcrypt('secret'),
+        'remember_token'    => str_random(10),
     ];
 });
 
-$factory->define(App\Voucher::class, function (Faker\Generator $faker) {
-
+$factory->define(App\Voucher::class, function (Faker\Generator $faker)
+{
     return [
         'date_from' => $faker->dateTimeBetween('-2 days', '-1 days'),
         'date_till' => $faker->dateTimeBetween('-1 days', '1 days'),
@@ -32,8 +33,8 @@ $factory->define(App\Voucher::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Product::class, function (Faker\Generator $faker) {
-
+$factory->define(App\Product::class, function (Faker\Generator $faker)
+{
     $voucher_ids = [1,2,3,4,5,6,7,8,9,10];
     return [
         'name'          => $faker->email,
