@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -17,7 +19,6 @@ class Handler extends ExceptionHandler
         \Illuminate\Auth\AuthenticationException::class,
         \Illuminate\Auth\Access\AuthorizationException::class,
         \Symfony\Component\HttpKernel\Exception\HttpException::class,
-        \Illuminate\Database\Eloquent\ModelNotFoundException::class,
         \Illuminate\Session\TokenMismatchException::class,
         \Illuminate\Validation\ValidationException::class,
     ];
@@ -44,6 +45,22 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ( $request->expectsJson() )
+        {
+            if ($exception instanceof ModelNotFoundException )
+            {
+                return response()->json([
+                    'error' => 'Resource not found'
+                ], 404);
+            }
+            elseif( $exception instanceof NotFoundHttpException )
+            {
+                return response()->json([
+                    'error' => 'Page not found'
+                ], 404);
+            }
+        }
+
         return parent::render($request, $exception);
     }
 
@@ -56,10 +73,12 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        if ($request->expectsJson()) {
+        if ($request->expectsJson())
+        {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
-        return redirect()->guest(route('login'));
+//        return redirect()->guest(route('login'));
+        return response()->json(['error' => 'Unauthenticated.'], 401);
     }
 }

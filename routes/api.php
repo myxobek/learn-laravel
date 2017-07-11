@@ -16,3 +16,18 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('register', 'Auth\RegisterController@register');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout');
+
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('products', 'ProductController@index');
+    Route::post('products', 'ProductController@add');
+    Route::put('products/{product}', 'ProductController@buy');
+
+    Route::get('vouchers', 'VoucherController@index');
+    Route::post('vouchers', 'VoucherController@create');
+    Route::put('vouchers/{voucher}/bind/{product}', 'VoucherController@bind');
+    Route::put('vouchers/{voucher}/unbind/{product}', 'VoucherController@unbind');
+});
