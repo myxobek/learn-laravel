@@ -6,8 +6,7 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
-phpinfo();
-die();
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
