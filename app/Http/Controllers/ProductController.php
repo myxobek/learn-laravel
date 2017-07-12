@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ProductVoucher;
+use App\Voucher;
 use Illuminate\Http\Request;
 use App\Product;
 use Illuminate\Support\Facades\DB;
@@ -38,8 +40,15 @@ class ProductController extends Controller
 
     public function buy(Request $request, Product $product)
     {
-        $product->update($request->all());
+        $productVouchers = ProductVoucher::select('voucher_id')->where('product_id', '=', $product->getKey())->get();
+        $productVouchers->each(function($productVoucher)
+        {
+            $voucher = Voucher::where('id', '=', $productVoucher->getAttribute('voucher_id'))->first();
+            $voucher->delete();
+            $productVoucher->delete();
+        });
+        $product->delete();
 
-        return response()->json($product, 200);
+        return response()->json(null, 200);
     }
 }

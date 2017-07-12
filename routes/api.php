@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Log::useFiles('php://stderr');
-
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -30,7 +28,6 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('products', 'ProductController@create');
     Route::put('products/{product}/buy', 'ProductController@buy');
 
-    Route::get('vouchers', 'VoucherController@index');
     Route::post('vouchers', 'VoucherController@create');
 
     Route::post('vouchers/{voucher}/bind/products/{product}', 'ProductVoucherController@bind');

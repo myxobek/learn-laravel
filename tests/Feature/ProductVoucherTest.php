@@ -33,6 +33,15 @@ class ProductVoucherTest extends TestCase
             'price'         => 1000,
         ]);
 
+        $this->json('GET', '/api/products', [], $this->_headers)
+            ->assertJson([
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 1000
+                ]
+            ]);
+
         $this->json('POST', '/api/vouchers/' . $voucher->id . '/bind/products/' . $product->id, [], $this->_headers)
             ->assertStatus(200)
             ->assertJson([
@@ -40,6 +49,40 @@ class ProductVoucherTest extends TestCase
                     'product_id'    => 1,
                     'voucher_id'    => 1
             ]);
+
+        $this->json('GET', '/api/products', [], $this->_headers)
+            ->assertJson([
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 800
+                ]
+            ]);
+    }
+
+    public function testVoucherCannotBindTwiceToProductCorrectly()
+    {
+        $voucher = factory(Voucher::class)->create([
+            'date_from' => date('Y-m-d H:i:s', strtotime('-1 days')),
+            'date_till' => date('Y-m-d H:i:s', strtotime('+1 days')),
+            'discount'  => 20
+        ]);
+
+        $product = factory(Product::class)->create([
+            'name'          => 'test1@test.com',
+            'price'         => 1000,
+        ]);
+
+        $this->json('POST', '/api/vouchers/' . $voucher->id . '/bind/products/' . $product->id, [], $this->_headers)
+            ->assertStatus(200)
+            ->assertJson([
+                'id'            => 1,
+                'product_id'    => 1,
+                'voucher_id'    => 1
+            ]);
+
+        $this->json('POST', '/api/vouchers/' . $voucher->id . '/bind/products/' . $product->id, [], $this->_headers)
+            ->assertStatus(406);
     }
 
     public function testVoucherUnBindedFromProductCorrectly()
@@ -60,7 +103,25 @@ class ProductVoucherTest extends TestCase
             'voucher_id'    => 1
         ]);
 
+        $this->json('GET', '/api/products', [], $this->_headers)
+            ->assertJson([
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 800
+                ]
+            ]);
+
         $this->json('DELETE', '/api/vouchers/' . $voucher->id . '/unbind/products/' . $product->id, [], $this->_headers)
             ->assertStatus(204);
+
+        $this->json('GET', '/api/products', [], $this->_headers)
+            ->assertJson([
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 1000
+                ]
+            ]);
     }
 }

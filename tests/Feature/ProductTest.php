@@ -7,9 +7,6 @@ use App\ProductVoucher;
 use App\User;
 use App\Voucher;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ProductTest extends TestCase
 {
@@ -74,6 +71,35 @@ class ProductTest extends TestCase
                     'price' => 3393
                 ],
             ]);
+
+        factory(Voucher::class)->create([
+            'date_from' => date('Y-m-d H:i:s', strtotime('-1 days')),
+            'date_till' => date('Y-m-d H:i:s', strtotime('+1 days')),
+            'discount'  => 90
+        ]);
+
+        factory(ProductVoucher::class)->create([
+            'product_id' => 2,
+            'voucher_id' => 3
+        ]);
+
+        $this->json('GET', '/api/products', [], $this->_headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'price'],
+            ])
+            ->assertJson([
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 42
+                ],
+                [
+                    'id'    => 2,
+                    'name'  => 'test2@test.com',
+                    'price' => 1696
+                ],
+            ]);
     }
 
     public function testsProductIsCreatedCorrectly()
@@ -90,5 +116,82 @@ class ProductTest extends TestCase
                 'name'          => 'test@test.com',
                 'price'         => 42,
             ]);
+    }
+
+    public function testsProductIsBoughtCorrectly()
+    {
+        $product1 = factory(Product::class)->create([
+            'name'          => 'test1@test.com',
+            'price'         => 42,
+        ]);
+
+        $product2 = factory(Product::class)->create([
+            'name'          => 'test2@test.com',
+            'price'         => 4242,
+        ]);
+
+        $voucher1 = factory(Voucher::class)->create([
+            'date_from' => date('Y-m-d H:i:s', strtotime('-1 days')),
+            'date_till' => date('Y-m-d H:i:s', strtotime('+1 days')),
+            'discount'  => 20
+        ]);
+
+        factory(Voucher::class)->create([
+            'date_from' => date('Y-m-d H:i:s', strtotime('-1 days')),
+            'date_till' => date('Y-m-d H:i:s', strtotime('+1 days')),
+            'discount'  => 20
+        ]);
+
+        factory(ProductVoucher::class)->create([
+            'product_id' => 2,
+            'voucher_id' => 1
+        ]);
+
+        factory(ProductVoucher::class)->create([
+            'product_id' => 1,
+            'voucher_id' => 1
+        ]);
+
+        factory(ProductVoucher::class)->create([
+            'product_id' => 2,
+            'voucher_id' => 2
+        ]);
+
+        $this->json('GET', '/api/products', [], $this->_headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'price'],
+            ])
+            ->assertJson([
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 33
+                ],
+                [
+                    'id'    => 2,
+                    'name'  => 'test2@test.com',
+                    'price' => 2545
+                ],
+            ]);
+
+        $this->json('PUT', '/api/products/' . $product1->id . '/buy', [], $this->_headers)
+            ->assertStatus(200);
+
+        $this->json('GET', '/api/products', [], $this->_headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'price'],
+            ])
+            ->assertJson([
+                [
+                    'id'    => 2,
+                    'name'  => 'test2@test.com',
+                    'price' => 3393
+                ],
+            ]);
+
+        $this->json('POST', '/api/vouchers/' . $voucher1->id . '/bind/products/' . $product2->id, [], $this->_headers)
+            ->assertStatus(404);
     }
 }

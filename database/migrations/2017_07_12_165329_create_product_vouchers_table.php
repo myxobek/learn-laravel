@@ -18,6 +18,7 @@ class CreateProductVouchersTable extends Migration
             $table->integer('product_id');
             $table->integer('voucher_id');
             $table->timestamps();
+            $table->unique(['product_id', 'voucher_id']);
         });
     }
 
