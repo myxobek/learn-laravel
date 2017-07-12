@@ -10,25 +10,23 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = DB::table('products as p')
-            ->select(DB::raw('p.*, 
-            ( 
-                SELECT 
-                    CONCAT(\'[\',group_concat(JSON_OBJECT(\'id\', v.id, \'discount\', v.discount, \'date_from\', v.date_from, \'date_till\', v.date_till)),\']\')
-                FROM
-                    vouchers as v
-                WHERE
-                    JSON_CONTAINS(p.vouchers_ids, CAST(v.id as char))
-            ) as vouchers'))
+        return DB::table('products as p')
+            ->leftJoin('product_vouchers as pv', 'p.id', '=', 'pv.product_id')
+            ->leftJoin('vouchers as v', function($join)
+            {
+                $join
+                    ->on('v.id', '=', 'pv.voucher_id')
+                    ->whereDate('date_from', '<=', date('Y-m-d H:i:s') )
+                    ->whereDate('date_till', '>=', date('Y-m-d H:i:s') );
+            })
+            ->select(
+                'p.id as id',
+                'p.name as name',
+                DB::raw('FLOOR( price * ( 1 - ( LEAST( COALESCE( SUM(v.discount), 0 ), 60) / 100 ) ) ) as price')
+            )
+            ->orderBy('p.id')
+            ->groupBy('p.id')
             ->get();
-
-        $products = $products->map(function($v)
-        {
-            $v->vouchers = json_decode( $v->vouchers, true );
-            return $v;
-        }, $products);
-
-        return $products;
     }
 
     public function add(Request $request)

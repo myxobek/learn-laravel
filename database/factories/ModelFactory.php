@@ -29,16 +29,25 @@ $factory->define(App\Voucher::class, function (Faker\Generator $faker)
     return [
         'date_from' => $faker->dateTimeBetween('-2 days', '-1 days'),
         'date_till' => $faker->dateTimeBetween('-1 days', '1 days'),
-        'discount'  => $faker->numberBetween(1, 75)
+        'discount'  => $faker->numberBetween(1, 25)
     ];
 });
 
 $factory->define(App\Product::class, function (Faker\Generator $faker)
 {
-    $voucher_ids = [1,2,3,4,5,6,7,8,9,10];
     return [
         'name'          => $faker->email,
         'price'         => $faker->randomFloat(0,0,1000),
-        'vouchers_ids'  => json_encode( $faker->randomElements( $voucher_ids, rand(0,10) ) )
+    ];
+});
+
+$factory->define(App\ProductVoucher::class, function (Faker\Generator $faker)
+{
+    $product_ids = range(1,50);
+    $voucher_ids = range(1,25);
+
+    return [
+        'product_id'    => $faker->randomElement($product_ids),
+        'voucher_id'    => $faker->randomElement($voucher_ids),
     ];
 });

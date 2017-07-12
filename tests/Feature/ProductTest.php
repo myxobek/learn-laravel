@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Product;
+use App\ProductVoucher;
 use App\User;
+use App\Voucher;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -26,31 +28,51 @@ class ProductTest extends TestCase
         factory(Product::class)->create([
             'name'          => 'test1@test.com',
             'price'         => 42,
-            'vouchers_ids'  => '[]'
         ]);
 
         factory(Product::class)->create([
             'name'          => 'test2@test.com',
             'price'         => 4242,
-            'vouchers_ids'  => '[1,2]'
+        ]);
+
+        factory(Voucher::class)->create([
+            'date_from' => date('Y-m-d H:i:s', strtotime('-1 days')),
+            'date_till' => date('Y-m-d H:i:s', strtotime('+1 days')),
+            'discount'  => 20
+        ]);
+
+        factory(Voucher::class)->create([
+            'date_from' => date('Y-m-d H:i:s', strtotime('-3 days')),
+            'date_till' => date('Y-m-d H:i:s', strtotime('-2 days')),
+            'discount'  => 25
+        ]);
+
+        factory(ProductVoucher::class)->create([
+            'product_id' => 2,
+            'voucher_id' => 1
+        ]);
+
+        factory(ProductVoucher::class)->create([
+            'product_id' => 2,
+            'voucher_id' => 2
         ]);
 
         $this->json('GET', '/api/products', [], $this->_headers)
             ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'price'],
+            ])
             ->assertJson([
                 [
-                    'name'          => 'test1@test.com',
-                    'price'         => 42,
-                    'vouchers_ids'  => '[]'
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 42
                 ],
                 [
-                    'name'          => 'test2@test.com',
-                    'price'         => 4242,
-                    'vouchers_ids'  => '[1,2]'
-                ]
-            ])
-            ->assertJsonStructure([
-                '*' => ['id', 'name', 'price', 'vouchers_ids', 'created_at', 'updated_at'],
+                    'id'    => 2,
+                    'name'  => 'test2@test.com',
+                    'price' => 3393
+                ],
             ]);
     }
 
@@ -59,7 +81,6 @@ class ProductTest extends TestCase
         $payload = [
             'name'          => 'test@test.com',
             'price'         => 42,
-            'vouchers_ids'  => '[]'
         ];
 
         $this->json('POST', '/api/products', $payload, $this->_headers)
@@ -68,7 +89,6 @@ class ProductTest extends TestCase
                 'id'            => 1,
                 'name'          => 'test@test.com',
                 'price'         => 42,
-                'vouchers_ids'  => '[]'
             ]);
     }
 }

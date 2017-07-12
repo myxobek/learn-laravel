@@ -19,7 +19,7 @@ class VouchersTableSeeder extends Seeder
             \App\Voucher::create([
                 'date_from' => $faker->dateTimeBetween('-2 days', '-1 days'),
                 'date_till' => $faker->dateTimeBetween('-1 days', '1 days'),
-                'discount'  => $faker->numberBetween(1, 75)
+                'discount'  => $faker->numberBetween(1, 90)
             ]);
         }
     }

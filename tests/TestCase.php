@@ -13,5 +13,7 @@ abstract class TestCase extends BaseTestCase
     public function setUp()
     {
         parent::setUp();
+        Artisan::call('migrate:reset');
+        Artisan::call('migrate');
     }
 }
