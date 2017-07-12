@@ -29,7 +29,7 @@ class ProductController extends Controller
             ->get();
     }
 
-    public function add(Request $request)
+    public function create(Request $request)
     {
         $product = Product::create($request->all());
 

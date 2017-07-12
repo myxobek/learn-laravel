@@ -27,11 +27,12 @@ Route::post('logout', 'Auth\LoginController@logout');
 
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('products', 'ProductController@index');
-    Route::post('products', 'ProductController@add');
+    Route::post('products', 'ProductController@create');
     Route::put('products/{product}/buy', 'ProductController@buy');
 
     Route::get('vouchers', 'VoucherController@index');
     Route::post('vouchers', 'VoucherController@create');
-    Route::put('vouchers/{voucher}/bind/{product}', 'VoucherController@bind');
-    Route::put('vouchers/{voucher}/unbind/{product}', 'VoucherController@unbind');
+
+    Route::post('vouchers/{voucher}/bind/products/{product}', 'ProductVoucherController@bind');
+    Route::delete('vouchers/{voucher}/unbind/products/{product}', 'ProductVoucherController@unbind');
 });
