@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return DB::table('products as p')
+        $products = DB::table('products as p')
             ->leftJoin('product_vouchers as pv', 'p.id', '=', 'pv.product_id')
             ->leftJoin('vouchers as v', function($join)
             {
@@ -29,6 +29,14 @@ class ProductController extends Controller
             ->orderBy('p.id')
             ->groupBy('p.id')
             ->get();
+
+        $products = $products->map(function($p)
+        {
+            $p->buy = '<a href="javascript:void(0);" class="btn btn-success buy-product" data-id="' . $p->id . '">Buy!</a>';
+            return $p;
+        });
+
+        return $products;
     }
 
     public function create(Request $request)
@@ -40,13 +48,17 @@ class ProductController extends Controller
 
     public function buy(Request $request, Product $product)
     {
-        $productVouchers = ProductVoucher::select('voucher_id')->where('product_id', '=', $product->getKey())->get();
-        $productVouchers->each(function($productVoucher)
+        // all product_vouchers by product_id
+        $productVouchers = ProductVoucher::where('product_id', '=', $product->getKey());
+        $productVouchers->get()->each(function($productVoucher)
         {
+            // remove voucher
             $voucher = Voucher::where('id', '=', $productVoucher->getAttribute('voucher_id'))->first();
             $voucher->delete();
-            $productVoucher->delete();
+            // remove product_vouchers by voucher_id
+            ProductVoucher::where('voucher_id', '=', $voucher->getKey())->delete();
         });
+        // remove product
         $product->delete();
 
         return response()->json(null, 200);

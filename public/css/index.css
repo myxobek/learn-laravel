@@ -1,0 +1,7 @@
+.table.table-hover {
+    width:100%;
+}
+.table.table-hover tr td,
+.table.table-hover tr th {
+    width:25%
+}

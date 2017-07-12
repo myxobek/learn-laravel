@@ -9,6 +9,7 @@
 
         <link rel="stylesheet" href="{{ \Illuminate\Support\Facades\URL::asset('css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ \Illuminate\Support\Facades\URL::asset('css/bootstrap-table.css') }}">
+        <link rel="stylesheet" href="{{ \Illuminate\Support\Facades\URL::asset('css/index.css') }}">
 
         <script type="text/javascript" src="{{ \Illuminate\Support\Facades\URL::asset('js/jquery-1.9.1.js') }}"></script>
         <script type="text/javascript" src="{{ \Illuminate\Support\Facades\URL::asset('js/bootstrap.js') }}"></script>
