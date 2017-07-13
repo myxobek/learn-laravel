@@ -1,0 +1,1113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>learn_laravel</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/darkula.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <style>body {
+    position: relative;
+}
+
+h1 {
+    margin-top: 5px;
+}
+
+h1, h2, h3, h4 {
+    color: #2b2b2b;
+}
+
+h2:after {
+    content: ' ';
+}
+
+h5 {
+    font-weight: bold;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+    display: none;
+    position: absolute;
+    margin-left: 8px;
+}
+
+h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a {
+    color: #a5a5a5;
+    display: initial;
+}
+
+.nav.nav-tabs > li > a {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.tab-content {
+    padding-top: 8px;
+}
+
+.table {
+    margin-bottom: 8px;
+}
+
+pre {
+    border-radius: 0px;
+    border: none;
+}
+
+pre code {
+    margin: -9.5px;
+}
+
+.request {
+    margin-top: 12px;
+    margin-bottom: 24px;
+}
+
+.response-text-sample {
+    padding: 0px !important;
+}
+
+.response-text-sample pre {
+    margin-bottom: 0px;
+}
+
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 250px;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #2b2b2b;
+    padding-top: 20px;
+}
+
+#sidebar-wrapper ul {
+    width: 250px;
+}
+
+#sidebar-wrapper ul li {
+    margin-right: 10px;
+}
+
+#sidebar-wrapper ul li a:hover {
+    background: inherit;
+    text-decoration: none;
+}
+
+#sidebar-wrapper ul li a {
+    display: block;
+    color: #ECF0F1;
+    padding: 6px 15px;
+}
+
+#sidebar-wrapper ul li ul {
+    padding-left: 25px;
+}
+
+#sidebar-wrapper ul li ul li a {
+    padding: 1px 0px;
+}
+
+#sidebar-wrapper ul li a:hover,
+#sidebar-wrapper ul li a:focus {
+    color: #e0c46c;
+    border-right: solid 1px #e0c46c;
+}
+
+#sidebar-wrapper ul li.active > a {
+    color: #e0c46c;
+    border-right: solid 3px #e0c46c;
+}
+
+#sidebar-wrapper ul li:not(.active) ul {
+    display: none;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px 15px 15px 250px;
+}
+</style>
+</head>
+<body data-spy="scroll" data-target=".scrollspy">
+<div id="sidebar-wrapper">
+    <div class="scrollspy">
+    <ul id="main-menu" data-spy="affix" class="nav">
+        <li>
+            <a href="#doc-general-notes">General notes</a>
+        </li>
+        
+        <li>
+            <a href="#doc-api-detail">API detail</a>
+        </li>
+        
+        <li>
+            <a href="#request-generate-api-token">Generate api_token</a>
+        </li>
+        
+        <li>
+            <a href="#request-products-list">Products list</a>
+        </li>
+        
+        <li>
+            <a href="#request-create-voucher">Create voucher</a>
+        </li>
+        
+        <li>
+            <a href="#request-create-product">Create product</a>
+        </li>
+        
+        <li>
+            <a href="#request-add-voucher-bind-to-a-certain-product">Add voucher bind to a certain product</a>
+        </li>
+        
+        <li>
+            <a href="#request-remove-voucher-bind-from-a-certain-product">Remove voucher bind from a certain product</a>
+        </li>
+        
+        <li>
+            <a href="#request-buy-a-product">Buy a product</a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+</div>
+<div id="page-content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>learn_laravel</h1>
+
+                <h2 id="doc-general-notes">
+                    General notes
+                    <a href="#doc-general-notes"><i class="glyphicon glyphicon-link"></i></a>
+                </h2>
+
+                
+
+                
+
+                <h2 id="doc-api-detail">
+                    API detail
+                    <a href="#doc-api-detail"><i class="glyphicon glyphicon-link"></i></a>
+                </h2>
+
+                
+                
+                <div class="request">
+
+                    <h3 id="request-generate-api-token">
+                        Generate api_token
+                        <a href="#request-generate-api-token"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div><p>In order to use api you first need to authenticate and get api_token</p>
+</div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-generate-api-token-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-generate-api-token-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-generate-api-token-example-curl">
+                                <pre><code class="hljs curl">curl -X POST -H "Accept: application/json" -H "Content-Type: application/x-www-form-urlencoded" -d "email=admin@test.com&password=foobar123" "http://127.0.0.1:8000/api/login"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-generate-api-token-example-http">
+                                <pre><code class="hljs http">POST /api/login HTTP/1.1
+Host: 127.0.0.1:8000
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+
+email=admin@test.com&password=foobar123</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-generate-api-token-responses-feea0d32-55d5-9d5d-89af-a8e220536ba3" data-toggle="tab">
+                                    
+                                    Response
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-generate-api-token-responses-feea0d32-55d5-9d5d-89af-a8e220536ba3">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 </td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, private</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>close</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 13 Jul 2017 16:34:53 +0000, Thu, 13 Jul 2017 16:34:53 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Host</th><td>127.0.0.1:8000</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Powered-By</th><td>PHP/7.1.7-1+ubuntu16.04.1+deb.sury.org+1</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Limit</th><td>60</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Remaining</th><td>59</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "id": 1,
+    "name": "Administrator",
+    "email": "admin@test.com",
+    "created_at": "2017-07-13 16:08:00",
+    "updated_at": "2017-07-13 16:34:53",
+    "api_token": "F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7"
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-products-list">
+                        Products list
+                        <a href="#request-products-list"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-products-list-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-products-list-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-products-list-example-curl">
+                                <pre><code class="hljs curl">curl -X GET -H "Accept: application/json" -H "Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7" "http://127.0.0.1:8000/api/products"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-products-list-example-http">
+                                <pre><code class="hljs http">GET /api/products HTTP/1.1
+Host: 127.0.0.1:8000
+Accept: application/json
+Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-products-list-responses-b716f9a4-dca3-42e7-16c2-24f5e41056bc" data-toggle="tab">
+                                    
+                                    Response
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-products-list-responses-b716f9a4-dca3-42e7-16c2-24f5e41056bc">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 </td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, private</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>close</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 13 Jul 2017 16:37:40 +0000, Thu, 13 Jul 2017 16:37:40 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Host</th><td>127.0.0.1:8000</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Powered-By</th><td>PHP/7.1.7-1+ubuntu16.04.1+deb.sury.org+1</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Limit</th><td>60</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Remaining</th><td>59</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>[
+    {
+        "id": 2,
+        "name": "laurine42@parisian.info",
+        "price": 95,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"2\">Buy!<\/a>"
+    },
+    {
+        "id": 3,
+        "name": "jenkins.thalia@hotmail.com",
+        "price": 942,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"3\">Buy!<\/a>"
+    },
+    {
+        "id": 4,
+        "name": "felicity.brown@yahoo.com",
+        "price": 456,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"4\">Buy!<\/a>"
+    },
+    {
+        "id": 5,
+        "name": "lockman.wilma@yahoo.com",
+        "price": 765,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"5\">Buy!<\/a>"
+    },
+    {
+        "id": 6,
+        "name": "nkunze@mayert.com",
+        "price": 383,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"6\">Buy!<\/a>"
+    },
+    {
+        "id": 7,
+        "name": "yroob@stehr.biz",
+        "price": 218,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"7\">Buy!<\/a>"
+    },
+    {
+        "id": 8,
+        "name": "roderick.larson@gmail.com",
+        "price": 864,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"8\">Buy!<\/a>"
+    },
+    {
+        "id": 9,
+        "name": "weldon.heathcote@gmail.com",
+        "price": 828,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"9\">Buy!<\/a>"
+    },
+    {
+        "id": 10,
+        "name": "smonahan@bogan.com",
+        "price": 244,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"10\">Buy!<\/a>"
+    },
+    {
+        "id": 11,
+        "name": "urosenbaum@yahoo.com",
+        "price": 859,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"11\">Buy!<\/a>"
+    },
+    {
+        "id": 12,
+        "name": "alvena.dickens@williamson.com",
+        "price": 46,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"12\">Buy!<\/a>"
+    },
+    {
+        "id": 13,
+        "name": "zieme.hudson@pouros.com",
+        "price": 139,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"13\">Buy!<\/a>"
+    },
+    {
+        "id": 14,
+        "name": "wuckert.jerel@hotmail.com",
+        "price": 525,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"14\">Buy!<\/a>"
+    },
+    {
+        "id": 15,
+        "name": "lnader@effertz.com",
+        "price": 987,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"15\">Buy!<\/a>"
+    },
+    {
+        "id": 16,
+        "name": "carol.harber@yahoo.com",
+        "price": 424,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"16\">Buy!<\/a>"
+    },
+    {
+        "id": 17,
+        "name": "cgerlach@okuneva.com",
+        "price": 788,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"17\">Buy!<\/a>"
+    },
+    {
+        "id": 18,
+        "name": "ihyatt@hyatt.org",
+        "price": 331,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"18\">Buy!<\/a>"
+    },
+    {
+        "id": 19,
+        "name": "mcartwright@erdman.org",
+        "price": 646,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"19\">Buy!<\/a>"
+    },
+    {
+        "id": 20,
+        "name": "lubowitz.petra@gmail.com",
+        "price": 248,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"20\">Buy!<\/a>"
+    },
+    {
+        "id": 21,
+        "name": "rnienow@crona.com",
+        "price": 637,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"21\">Buy!<\/a>"
+    },
+    {
+        "id": 22,
+        "name": "fcrist@gmail.com",
+        "price": 942,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"22\">Buy!<\/a>"
+    },
+    {
+        "id": 23,
+        "name": "hubert.stiedemann@gmail.com",
+        "price": 225,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"23\">Buy!<\/a>"
+    },
+    {
+        "id": 24,
+        "name": "tromp.fannie@kihn.com",
+        "price": 299,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"24\">Buy!<\/a>"
+    },
+    {
+        "id": 25,
+        "name": "evelyn.zulauf@yahoo.com",
+        "price": 774,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"25\">Buy!<\/a>"
+    },
+    {
+        "id": 26,
+        "name": "lemuel27@yahoo.com",
+        "price": 812,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"26\">Buy!<\/a>"
+    },
+    {
+        "id": 27,
+        "name": "kreiger.oran@hotmail.com",
+        "price": 506,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"27\">Buy!<\/a>"
+    },
+    {
+        "id": 28,
+        "name": "holden.russel@hotmail.com",
+        "price": 89,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"28\">Buy!<\/a>"
+    },
+    {
+        "id": 29,
+        "name": "hackett.lucio@yahoo.com",
+        "price": 622,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"29\">Buy!<\/a>"
+    },
+    {
+        "id": 30,
+        "name": "name70@rodriguez.net",
+        "price": 659,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"30\">Buy!<\/a>"
+    },
+    {
+        "id": 31,
+        "name": "randy.koch@yahoo.com",
+        "price": 811,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"31\">Buy!<\/a>"
+    },
+    {
+        "id": 32,
+        "name": "zwelch@yahoo.com",
+        "price": 372,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"32\">Buy!<\/a>"
+    },
+    {
+        "id": 33,
+        "name": "mbrakus@upton.net",
+        "price": 17,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"33\">Buy!<\/a>"
+    },
+    {
+        "id": 34,
+        "name": "sdurgan@yahoo.com",
+        "price": 82,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"34\">Buy!<\/a>"
+    },
+    {
+        "id": 35,
+        "name": "dzboncak@hotmail.com",
+        "price": 442,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"35\">Buy!<\/a>"
+    },
+    {
+        "id": 36,
+        "name": "yvon@mayert.net",
+        "price": 959,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"36\">Buy!<\/a>"
+    },
+    {
+        "id": 37,
+        "name": "aboyer@yahoo.com",
+        "price": 598,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"37\">Buy!<\/a>"
+    },
+    {
+        "id": 38,
+        "name": "hickle.emily@gulgowski.com",
+        "price": 350,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"38\">Buy!<\/a>"
+    },
+    {
+        "id": 39,
+        "name": "rosalia.bosco@gmail.com",
+        "price": 309,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"39\">Buy!<\/a>"
+    },
+    {
+        "id": 40,
+        "name": "mclaughlin.emery@homenick.net",
+        "price": 860,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"40\">Buy!<\/a>"
+    },
+    {
+        "id": 41,
+        "name": "hstroman@dare.com",
+        "price": 488,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"41\">Buy!<\/a>"
+    },
+    {
+        "id": 42,
+        "name": "gbechtelar@bernier.com",
+        "price": 627,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"42\">Buy!<\/a>"
+    },
+    {
+        "id": 43,
+        "name": "thompson.dortha@yahoo.com",
+        "price": 527,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"43\">Buy!<\/a>"
+    },
+    {
+        "id": 44,
+        "name": "balistreri.cielo@hotmail.com",
+        "price": 841,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"44\">Buy!<\/a>"
+    },
+    {
+        "id": 45,
+        "name": "tito.bogan@hand.com",
+        "price": 266,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"45\">Buy!<\/a>"
+    },
+    {
+        "id": 46,
+        "name": "shakira50@mccullough.org",
+        "price": 104,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"46\">Buy!<\/a>"
+    },
+    {
+        "id": 47,
+        "name": "haylie53@yahoo.com",
+        "price": 165,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"47\">Buy!<\/a>"
+    },
+    {
+        "id": 48,
+        "name": "borer.micah@hotmail.com",
+        "price": 49,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"48\">Buy!<\/a>"
+    },
+    {
+        "id": 49,
+        "name": "flatley.lizzie@gmail.com",
+        "price": 863,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"49\">Buy!<\/a>"
+    },
+    {
+        "id": 50,
+        "name": "ledner.leila@erdman.info",
+        "price": 338,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"50\">Buy!<\/a>"
+    },
+    {
+        "id": 51,
+        "name": "test@test.com",
+        "price": 42,
+        "buy": "<a href=\"javascript:void(0);\" class=\"btn btn-success buy-product\" data-id=\"51\">Buy!<\/a>"
+    }
+]</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-create-voucher">
+                        Create voucher
+                        <a href="#request-create-voucher"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div><p>Creates voucher with associated discount</p>
+</div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-create-voucher-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-create-voucher-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-create-voucher-example-curl">
+                                <pre><code class="hljs curl">curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -H "Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7" -d "date_from=2017-07-12 00:00:00&date_till=2017-07-19 00:00:00&discount=10" "http://127.0.0.1:8000/api/vouchers"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-create-voucher-example-http">
+                                <pre><code class="hljs http">POST /api/vouchers HTTP/1.1
+Host: 127.0.0.1:8000
+Accept: application/json
+Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7
+Content-Type: application/x-www-form-urlencoded
+
+date_from=2017-07-12 00:00:00&date_till=2017-07-19 00:00:00&discount=10</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-create-voucher-responses-8b583b89-59b6-47f0-f444-535072b01176" data-toggle="tab">
+                                    
+                                    Response
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-create-voucher-responses-8b583b89-59b6-47f0-f444-535072b01176">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 </td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, private</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>close</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 13 Jul 2017 16:38:01 +0000, Thu, 13 Jul 2017 16:38:01 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Host</th><td>127.0.0.1:8000</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Powered-By</th><td>PHP/7.1.7-1+ubuntu16.04.1+deb.sury.org+1</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Limit</th><td>60</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Remaining</th><td>59</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "date_from": "2017-07-12 00:00:00",
+    "date_till": "2017-07-19 00:00:00",
+    "discount": "10",
+    "updated_at": "2017-07-13 16:38:01",
+    "created_at": "2017-07-13 16:38:01",
+    "id": 12
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-create-product">
+                        Create product
+                        <a href="#request-create-product"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div><p>Creates product with name and price</p>
+</div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-create-product-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-create-product-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-create-product-example-curl">
+                                <pre><code class="hljs curl">curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -H "Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7" -H "Content-Type: application/x-www-form-urlencoded" -d "name=test@test.com&price=42" "http://127.0.0.1:8000/api/products"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-create-product-example-http">
+                                <pre><code class="hljs http">POST /api/products HTTP/1.1
+Host: 127.0.0.1:8000
+Accept: application/json
+Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7
+Content-Type: application/x-www-form-urlencoded
+
+name=test@test.com&price=42</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-create-product-responses-0dcb88a8-1292-1c44-286e-0d0fb9969f62" data-toggle="tab">
+                                    
+                                    Response
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-create-product-responses-0dcb88a8-1292-1c44-286e-0d0fb9969f62">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 </td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, private</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>close</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 13 Jul 2017 16:38:13 +0000, Thu, 13 Jul 2017 16:38:13 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Host</th><td>127.0.0.1:8000</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Powered-By</th><td>PHP/7.1.7-1+ubuntu16.04.1+deb.sury.org+1</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Limit</th><td>60</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Remaining</th><td>59</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "name": "test@test.com",
+    "price": "42",
+    "updated_at": "2017-07-13 16:38:13",
+    "created_at": "2017-07-13 16:38:13",
+    "id": 52
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-add-voucher-bind-to-a-certain-product">
+                        Add voucher bind to a certain product
+                        <a href="#request-add-voucher-bind-to-a-certain-product"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-add-voucher-bind-to-a-certain-product-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-add-voucher-bind-to-a-certain-product-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-add-voucher-bind-to-a-certain-product-example-curl">
+                                <pre><code class="hljs curl">curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -H "Accept: application/json" -H "Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7" -H "Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:8000/api/vouchers/1/bind/products/1"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-add-voucher-bind-to-a-certain-product-example-http">
+                                <pre><code class="hljs http">POST /api/vouchers/1/bind/products/1 HTTP/1.1
+Host: 127.0.0.1:8000
+Accept: application/json
+Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7
+Content-Type: application/x-www-form-urlencoded</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-add-voucher-bind-to-a-certain-product-responses-3365e922-95d2-04c6-a383-dc49689c24f5" data-toggle="tab">
+                                    
+                                    Response
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-add-voucher-bind-to-a-certain-product-responses-3365e922-95d2-04c6-a383-dc49689c24f5">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 </td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, private</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>close</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 13 Jul 2017 16:38:34 +0000, Thu, 13 Jul 2017 16:38:34 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Host</th><td>127.0.0.1:8000</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Powered-By</th><td>PHP/7.1.7-1+ubuntu16.04.1+deb.sury.org+1</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Limit</th><td>60</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Remaining</th><td>58</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{
+    "product_id": 2,
+    "voucher_id": 1,
+    "updated_at": "2017-07-13 16:38:34",
+    "created_at": "2017-07-13 16:38:34",
+    "id": 27
+}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-remove-voucher-bind-from-a-certain-product">
+                        Remove voucher bind from a certain product
+                        <a href="#request-remove-voucher-bind-from-a-certain-product"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-remove-voucher-bind-from-a-certain-product-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-remove-voucher-bind-from-a-certain-product-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-remove-voucher-bind-from-a-certain-product-example-curl">
+                                <pre><code class="hljs curl">curl -X DELETE -H "Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW" -H "Accept: application/json" -H "Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7" -H "Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:8000/api/vouchers/1/unbind/products/1"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-remove-voucher-bind-from-a-certain-product-example-http">
+                                <pre><code class="hljs http">DELETE /api/vouchers/1/unbind/products/1 HTTP/1.1
+Host: 127.0.0.1:8000
+Accept: application/json
+Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7
+Content-Type: application/x-www-form-urlencoded</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-remove-voucher-bind-from-a-certain-product-responses-e15f3973-0ad0-e2ca-4ca4-e6f03b03f46c" data-toggle="tab">
+                                    
+                                    Response
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-remove-voucher-bind-from-a-certain-product-responses-e15f3973-0ad0-e2ca-4ca4-e6f03b03f46c">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>204 </td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, private</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>close</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-type</th><td>text/html; charset=UTF-8</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 13 Jul 2017 19:38:52 +0300, Thu, 13 Jul 2017 16:38:52 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Host</th><td>127.0.0.1:8000</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Powered-By</th><td>PHP/7.1.7-1+ubuntu16.04.1+deb.sury.org+1</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Limit</th><td>60</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Remaining</th><td>58</td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+                
+                <div class="request">
+
+                    <h3 id="request-buy-a-product">
+                        Buy a product
+                        <a href="#request-buy-a-product"><i class="glyphicon glyphicon-link"></i></a>
+                    </h3>
+
+                    <div></div>
+
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#request-buy-a-product-example-curl" data-toggle="tab">Curl</a></li>
+                            <li role="presentation"><a href="#request-buy-a-product-example-http" data-toggle="tab">HTTP</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="request-buy-a-product-example-curl">
+                                <pre><code class="hljs curl">curl -X PUT -H "Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW" -H "Accept: application/json" -H "Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7" -H "Content-Type: application/x-www-form-urlencoded" "http://127.0.0.1:8000/api/products/1/buy"</code></pre>
+                            </div>
+                            <div class="tab-pane" id="request-buy-a-product-example-http">
+                                <pre><code class="hljs http">PUT /api/products/1/buy HTTP/1.1
+Host: 127.0.0.1:8000
+Accept: application/json
+Authorization: Bearer F7WVvw9EtgTFA2ObJz3Jy1XkqYPlLmhuLBqKpE9WiZ3znvKv49C0QRpfpmu7
+Content-Type: application/x-www-form-urlencoded</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div>
+                        <ul class="nav nav-tabs" role="tablist">
+                            
+                            <li role="presentation" class="active">
+                                <a href="#request-buy-a-product-responses-2f03bf8a-39b0-2f38-fd51-0e4700b02488" data-toggle="tab">
+                                    
+                                    Response
+                                    
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="request-buy-a-product-responses-2f03bf8a-39b0-2f38-fd51-0e4700b02488">
+                                <table class="table table-bordered">
+                                    <tr><th style="width: 20%;">Status</th><td>200 </td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Cache-Control</th><td>no-cache, private</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Connection</th><td>close</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Content-Type</th><td>application/json</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Date</th><td>Thu, 13 Jul 2017 16:39:15 +0000, Thu, 13 Jul 2017 16:39:15 GMT</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">Host</th><td>127.0.0.1:8000</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-Powered-By</th><td>PHP/7.1.7-1+ubuntu16.04.1+deb.sury.org+1</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Limit</th><td>60</td></tr>
+                                    
+                                    <tr><th style="width: 20%;">X-RateLimit-Remaining</th><td>58</td></tr>
+                                    
+                                    
+                                    
+                                    <tr><td class="response-text-sample" colspan="2">
+                                        <pre><code>{}</code></pre>
+                                    </td></tr>
+                                    
+                                    
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+
+                    <hr>
+                </div>
+                
+
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+</html>
