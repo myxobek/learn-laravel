@@ -63,6 +63,6 @@ Laravel development server started: <http://127.0.0.1:8000>
 
 `$ composer test`
 
-##API Documentation
+## API Documentation
 
 Can be found in [api_doc.html](api_doc.html)
