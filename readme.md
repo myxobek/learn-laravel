@@ -43,22 +43,22 @@ DB_TEST_USERNAME=<USERNAME>
 DB_TEST_PASSWORD=<PASSWORD>
 ```
 
-6. Create application key
+7. Create application key
 
 `$ php artisan key:generate`
 
-7. Clear artisan configs
+8. Clear artisan configs
 
 `$ php artisan config:clear`
 
-8. Run application
+9. Run application
 
 ```
 $ php artisan serve
 Laravel development server started: <http://127.0.0.1:8000>
 ```
 
-9. Go to `http://127.0.0.1:8000`
-10. Unit testing
+10. Go to `http://127.0.0.1:8000`
+11. Unit testing
 
 `$ composer test`
