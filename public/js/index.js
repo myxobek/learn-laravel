@@ -1,6 +1,9 @@
 var App = (function()
 {
-    var API_TOKEN = null;
+    var _api_token  = null;
+
+    var _orderby    = 'id';
+    var _direction  = 'asc';
 
     var self = {};
     self.init = function()
@@ -16,23 +19,39 @@ var App = (function()
                     self.buyProduct( product_id );
                 }
             }
+        ).on(
+            'click',
+            '.sortable',
+            function()
+            {
+                var orderBy = $(this).parent().data('field');
+                var direction = 'desc';
+                if( $(this).hasClass('desc') )
+                {
+                    direction = 'asc';
+                }
+                self.getProducts(orderBy, direction);
+            }
         );
 
         $('#table').bootstrapTable({
             columns: [{
                 field: 'id',
-                title: 'Product ID'
+                title: 'Product ID',
+                sortable: true
             }, {
                 field: 'name',
-                title: 'Product Name'
+                title: 'Product Name',
+                sortable: true
             }, {
                 field: 'price',
-                title: 'Product Price'
+                title: 'Product Price',
+                sortable: true
             }, {
                 field: 'buy',
                 title: 'Buy'
             }],
-            data: []
+            data: [],
         });
     };
 
@@ -51,7 +70,7 @@ var App = (function()
             {
                 if ( data.hasOwnProperty('api_token') )
                 {
-                    API_TOKEN = data['api_token'];
+                    _api_token = data['api_token'];
                 }
                 onSuccess(data);
             },
@@ -63,24 +82,30 @@ var App = (function()
 
     self.getApiToken = function()
     {
-        return API_TOKEN;
+        return _api_token;
     };
 
     self.setApiToken = function( api_token )
     {
-        API_TOKEN = api_token;
+        _api_token = api_token;
     };
 
-    self.getProducts = function()
+    self.getProducts = function( orderBy, direction )
     {
+        _orderby    = orderBy   || _orderby;
+        _direction  = direction || _direction;
+
         $('#table').bootstrapTable('showLoading');
         $.ajax({
             'dataType'  : 'json',
             'method'    : 'get',
             'headers'   : {
-                'Authorization': 'Bearer ' + API_TOKEN
+                'Authorization': 'Bearer ' + _api_token
             },
-            'data'      : {},
+            'data'      : {
+                orderBy     : _orderby,
+                direction   : _direction,
+            },
             'timeout'   : 60000,
             'url'       : '/api/products',
             'success'   : function( data, textStatus, jqXHR )
@@ -107,7 +132,7 @@ var App = (function()
             'dataType'  : 'json',
             'method'    : 'put',
             'headers'   : {
-                'Authorization': 'Bearer ' + API_TOKEN
+                'Authorization': 'Bearer ' + _api_token
             },
             'data'      : {},
             'timeout'   : 60000,
@@ -125,12 +150,12 @@ var App = (function()
 
 $(document).ready(function()
 {
-    App.init();
     App.login(
         'admin@test.com',
         'foobar123',
         function()
         {
+            App.init();
             App.getProducts();
         }
     );

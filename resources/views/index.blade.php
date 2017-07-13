@@ -17,6 +17,6 @@
         <script type="text/javascript" src="{{ \Illuminate\Support\Facades\URL::asset('js/index.js') }}"></script>
     </head>
     <body>
-        <div id="table"></div>
+        <table id="table"></table>
     </body>
 </html>

@@ -194,4 +194,89 @@ class ProductTest extends TestCase
         $this->json('POST', '/api/vouchers/' . $voucher1->id . '/bind/products/' . $product2->id, [], $this->_headers)
             ->assertStatus(404);
     }
+
+    public function testsProductsListIsSortedCorrectly()
+    {
+        factory(Product::class)->create([
+            'name'          => 'test1@test.com',
+            'price'         => 4242,
+        ]);
+
+        factory(Product::class)->create([
+            'name'          => 'test2@test.com',
+            'price'         => 42,
+        ]);
+
+        $this->json('GET', '/api/products', [], $this->_headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'price'],
+            ])
+            ->assertJson([
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 4242
+                ],
+                [
+                    'id'    => 2,
+                    'name'  => 'test2@test.com',
+                    'price' => 42
+                ],
+            ]);
+
+        $this->json('GET', '/api/products', ['orderBy' => 'price', 'direction' => 'desc'], $this->_headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'price'],
+            ])
+            ->assertJson([
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 4242
+                ],
+                [
+                    'id'    => 2,
+                    'name'  => 'test2@test.com',
+                    'price' => 42
+                ],
+            ]);
+
+        $this->json('GET', '/api/products', ['orderBy' => 'name', 'direction' => 'asc'], $this->_headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'price'],
+            ])
+            ->assertJson([
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 4242
+                ],
+                [
+                    'id'    => 2,
+                    'name'  => 'test2@test.com',
+                    'price' => 42
+                ],
+            ]);
+
+        $this->json('GET', '/api/products', ['orderBy' => 'id', 'direction' => 'desc'], $this->_headers)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'price'],
+            ])
+            ->assertJson([
+                [
+                    'id'    => 2,
+                    'name'  => 'test2@test.com',
+                    'price' => 42
+                ],
+                [
+                    'id'    => 1,
+                    'name'  => 'test1@test.com',
+                    'price' => 4242
+                ],
+            ]);
+    }
 }

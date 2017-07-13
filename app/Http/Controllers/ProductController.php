@@ -10,8 +10,18 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $request = $request->all();
+
+        $order_by = isset( $request['orderBy'] ) && !empty( $request['orderBy'] ) && in_array($request['orderBy'], ['id','name','price'])
+            ? $request['orderBy']
+            : 'id';
+        $order_by = 'p.' . $order_by;
+        $direction = isset( $request['direction'] ) && !empty( $request['direction'] ) && in_array($request['direction'],['asc','desc'])
+            ? $request['direction']
+            : 'asc';
+
         $products = DB::table('products as p')
             ->leftJoin('product_vouchers as pv', 'p.id', '=', 'pv.product_id')
             ->leftJoin('vouchers as v', function($join)
@@ -26,9 +36,10 @@ class ProductController extends Controller
                 'p.name as name',
                 DB::raw('FLOOR( price * ( 1 - ( LEAST( COALESCE( SUM(v.discount), 0 ), 60) / 100 ) ) ) as price')
             )
-            ->orderBy('p.id')
+            ->orderBy($order_by, $direction)
             ->groupBy('p.id')
-            ->get();
+            ->get()
+        ;
 
         $products = $products->map(function($p)
         {
