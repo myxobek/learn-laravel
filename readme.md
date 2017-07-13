@@ -10,6 +10,7 @@
 3. Install necessary packages
 
 `$ composer install`
+
 4. In MySQL create databases for application and tests (ex. example and example_test) 
 
 ```
@@ -21,6 +22,7 @@ mysql> EXIT;
 5. Migrate database sample
 
 `$ mysql -u root -p example < database/sample.sql`
+
 6. Create and edit your .env file
 ```
 $ mv .env.example .env
@@ -44,15 +46,18 @@ DB_TEST_PASSWORD=<PASSWORD>
 6. Create application key
 
 `$ php artisan key:generate`
+
 7. Clear artisan configs
 
 `$ php artisan config:clear`
+
 8. Run application
 
 ```
 $ php artisan serve
 Laravel development server started: <http://127.0.0.1:8000>
 ```
+
 9. Go to `http://127.0.0.1:8000`
 10. Unit testing
 
